@@ -2,8 +2,10 @@ package com.medilabo.patientservice.service;
 
 import java.util.Optional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.medilabo.patientservice.configuration.ResourceNotFoundException;
 import com.medilabo.patientservice.model.Patient;
 import com.medilabo.patientservice.repository.PatientRepository;
 
@@ -17,8 +19,10 @@ public class PatientService {
 	 * Get one patient information
 	 * @return Patient
 	 * */
-	public Optional<Patient> getById(Integer id){
-		return patientRepository.findById(id);
+	public Patient getById(Integer id){
+		return patientRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Patient not found with id : " + id));
+
 	}
 	
 	/**
@@ -58,10 +62,27 @@ public class PatientService {
 		return patientRepository.save(patient);
 	}
 	
+	public Patient update(Integer id, Patient newInformations) {
+		
+		Optional<Patient> optionalPatient = patientRepository.findById(id);
+		
+		if (optionalPatient.isPresent()) {
+	        Patient existingPatient = optionalPatient.get();
+	        BeanUtils.copyProperties(newInformations, existingPatient, "id");
+	        return patientRepository.save(existingPatient);
+	    } else{
+	    	throw new ResourceNotFoundException("Patient not found with id: " + id);
+	    }
+	}
+	
+	
 	/**
 	 * Delete one patient information
 	 * */
 	public void delete(Integer id) {
+		if(!existsById(id)) {
+			throw new ResourceNotFoundException("Patient not found with that id : " + id);
+		}
 		patientRepository.deleteById(id);
 	}
 }
