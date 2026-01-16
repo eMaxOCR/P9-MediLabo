@@ -1,9 +1,6 @@
 package com.medilabo.patientservice.controller;
 
 import java.net.URI;
-import java.util.Optional;
-
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import com.medilabo.patientservice.model.Patient;
 import com.medilabo.patientservice.service.PatientService;
 
