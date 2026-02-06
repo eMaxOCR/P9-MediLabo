@@ -14,6 +14,8 @@ import com.medilabo.medilabo_ui.model.Patient;
 @Controller
 public class ControllerUi {
 	  
+	//Créer une variable, Ajouter l'url et le port.
+	
 	@Autowired
     private WebClient webClient;
 	 
