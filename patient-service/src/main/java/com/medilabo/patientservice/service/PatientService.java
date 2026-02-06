@@ -17,6 +17,7 @@ public class PatientService {
 	
 	/**
 	 * Get one patient information
+	 * @param Patient ID
 	 * @return Patient
 	 * */
 	public Patient getById(Integer id){
@@ -27,6 +28,7 @@ public class PatientService {
 	
 	/**
 	 * Get one patient information
+	 * @param Patient's last name
 	 * @return Patient
 	 * */
 	public Patient getByLastName(String lastname){
@@ -35,6 +37,7 @@ public class PatientService {
 	
 	/**
 	 * Get one patient information
+	 * @param Patient's last name
 	 * @return Patient
 	 * */
 	public Patient getByName(String lastname){
@@ -43,6 +46,7 @@ public class PatientService {
 	
 	/**
 	 * Get list of patients informations
+	 * @return list of patient
 	 * */
 	public Iterable<Patient> getAllPatient(){
 		return patientRepository.findAll();
@@ -50,6 +54,7 @@ public class PatientService {
 	
 	/**
 	 * Check if patient exist
+	 * @return Patient
 	 * */
 	public Boolean existsById(Integer id){
 		return patientRepository.existsById(id);
@@ -57,11 +62,17 @@ public class PatientService {
 	
 	/**
 	 * Create patient
+	 * @return Patient
 	 * */
 	public Patient create(Patient patient) {
 		return patientRepository.save(patient);
 	}
 	
+	/**
+	 * Update patient's informations
+	 * @param Patient with new informations
+	 * @return Patient
+	 * */
 	public Patient update(Integer id, Patient newInformations) {
 		
 		Optional<Patient> optionalPatient = patientRepository.findById(id);
@@ -78,6 +89,7 @@ public class PatientService {
 	
 	/**
 	 * Delete one patient information
+	 * @param patient's ID
 	 * */
 	public void delete(Integer id) {
 		if(!existsById(id)) {
