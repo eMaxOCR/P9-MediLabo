@@ -8,8 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
+
 import com.medilabo.medilabo_ui.model.Patient;
 import com.medilabo.medilabo_ui.model.Note;
 
@@ -129,18 +132,6 @@ public class ControllerUi {
 	}
 
 	/**
-	 * Delete one note
-	 * 
-	 * @return the patient detail view
-	 */
-	@PostMapping("/note/delete/{id}")
-	public String deleteNote(@PathVariable("id") String id, @RequestParam("patientId") Integer patientId) {
-		webClient.delete().uri("http://localhost:8080/api/note/{id}", id).retrieve().toBodilessEntity().block();
-
-		return "redirect:/patient/" + patientId;
-	}
-
-	/**
 	 * Create one new note
 	 */
 	@PostMapping("/note")
@@ -153,6 +144,35 @@ public class ControllerUi {
 	        .block();
 
 	    return "redirect:/patient/" + note.getPatientId();
+	}
+	 
+//	/**
+//	 * Update note
+//	 */
+//	@PostMapping("/note/{id}")
+//	public String updateNote(@PathVariable("id") String id, @ModelAttribute("note") Note note) {
+//	    
+//	    note.setId(id);
+//
+//	    webClient.put()
+//	            .uri("http://localhost:8080/api/note/{id}", id) 
+//	            .bodyValue(note)
+//	            .retrieve()
+//	            .bodyToMono(Note.class)
+//	            .block();
+//
+//	    return "redirect:/patient/" + note.getPatientId();
+//	}
+ 
+	/**
+	 * Delete one note
+	 * @return the patient detail view
+	 */
+	@PostMapping("/note/delete/{id}")
+	public String deleteNote(@PathVariable("id") String id, @RequestParam("patientId") Integer patientId) {
+		webClient.delete().uri("http://localhost:8080/api/note/{id}", id).retrieve().toBodilessEntity().block();
+
+		return "redirect:/patient/" + patientId;
 	}
 
 }
