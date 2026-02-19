@@ -26,7 +26,7 @@ public class NoteService {
 	/**
 	 * Get list of patient's note
 	 * */
-	public Iterable<Note> getAllPatientNote(String id){
+	public Iterable<Note> getAllPatientNote(Integer id){
 		return noteRespository.findByPatientId(id);
 	}
 	

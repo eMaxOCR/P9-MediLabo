@@ -36,7 +36,7 @@ public class controller {
 	 * @return list of notes.
 	 * */
 	@GetMapping("/user/{id}")
-	public Iterable<Note> getAllPatientNote(String id){
+	public Iterable<Note> getAllPatientNote(@PathVariable("id") Integer id){
 		return noteService.getAllPatientNote(id);
 	}
 	
