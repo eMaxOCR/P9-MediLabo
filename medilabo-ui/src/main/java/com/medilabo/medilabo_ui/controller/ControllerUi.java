@@ -136,6 +136,9 @@ public class ControllerUi {
 	 */
 	@PostMapping("/note")
 	public String saveNote(@ModelAttribute("note") Note note) {
+		if (note.getId() != null && note.getId().isEmpty()) {
+	        note.setId(null);
+	    }
 	    webClient.post()
 	        .uri("http://localhost:8080/api/note")
 	        .bodyValue(note)
@@ -145,24 +148,6 @@ public class ControllerUi {
 
 	    return "redirect:/patient/" + note.getPatientId();
 	}
-	 
-//	/**
-//	 * Update note
-//	 */
-//	@PostMapping("/note/{id}")
-//	public String updateNote(@PathVariable("id") String id, @ModelAttribute("note") Note note) {
-//	    
-//	    note.setId(id);
-//
-//	    webClient.put()
-//	            .uri("http://localhost:8080/api/note/{id}", id) 
-//	            .bodyValue(note)
-//	            .retrieve()
-//	            .bodyToMono(Note.class)
-//	            .block();
-//
-//	    return "redirect:/patient/" + note.getPatientId();
-//	}
  
 	/**
 	 * Delete one note
