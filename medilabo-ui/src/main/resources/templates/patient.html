@@ -17,9 +17,17 @@
 			<div class="card-body p-4">
 				<h2 class="mb-5 text-center">Fiche patient</h2>
 
+
+				<div class="d-flex border-bottom border-top mb-5 align-items-center">
+					<h5 class="mb-0 me-3">Analyse :</h5>
+					<input class="form-control-plaintext w-auto fw-bold" type="text"
+						value="Risque élevé" readonly>
+				</div>
+
 				<form
 					th:action="${isNew} ? @{/patient} : @{/patient/{id}(id=${patient.id})}"
 					th:object="${patient}" method="post">
+
 
 					<input type="hidden" th:if="${!isNew}" th:field="*{id}">
 
@@ -80,7 +88,8 @@
 						th:href="@{/note/ajouter(patientId=${patient.id})}"
 						th:if="${!isNew}"> + Ajouter une note </a>
 				</div>
-				<table class="table table-sm align-middle" th:unless="${#lists.isEmpty(notes)}">
+				<table class="table table-sm align-middle"
+					th:unless="${#lists.isEmpty(notes)}">
 					<thead>
 						<tr>
 							<th scope="col">Notes</th>

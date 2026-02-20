@@ -19,7 +19,7 @@ import com.medilabo.medilabo_ui.model.Note;
 @Controller
 public class ControllerUi {
 
-	// Créer une variable, Ajouter l'url et le port.
+	final String URL = "http://localhost:8080";
 
 	@Autowired
 	private WebClient webClient;
@@ -31,7 +31,7 @@ public class ControllerUi {
 	 */
 	@GetMapping("/patient")
 	public String listPatients(Model model) {
-		List<Patient> patients = webClient.get().uri("http://localhost:8080/api/patient").retrieve()
+		List<Patient> patients = webClient.get().uri(URL + "/api/patient").retrieve()
 				.bodyToFlux(Patient.class).collectList().block();
 
 		model.addAttribute("patients", patients);
@@ -45,9 +45,9 @@ public class ControllerUi {
 	 */
 	@GetMapping("/patient/{id}")
 	public String patient(@PathVariable("id") Integer id, Model model) {
-		Patient patient = webClient.get().uri("http://localhost:8080/api/patient/{id}", id).retrieve()
+		Patient patient = webClient.get().uri(URL + "/api/patient/{id}", id).retrieve()
 				.bodyToMono(Patient.class).block();
-		List<Note> notes = webClient.get().uri("http://localhost:8080/api/note/user/{id}", id).retrieve()
+		List<Note> notes = webClient.get().uri(URL + "/api/note/user/{id}", id).retrieve()
 				.bodyToFlux(Note.class).collectList().block();
 
 		model.addAttribute("isNew", false);
@@ -73,7 +73,7 @@ public class ControllerUi {
 	 */
 	@PostMapping("/patient")
 	public String savePatient(@ModelAttribute("patient") Patient patient) {
-		webClient.post().uri("http://localhost:8080/api/patient").bodyValue(patient).retrieve()
+		webClient.post().uri(URL + "/api/patient").bodyValue(patient).retrieve()
 				.bodyToMono(Patient.class).block();
 
 		return "redirect:/patient";
@@ -87,7 +87,7 @@ public class ControllerUi {
 
 		patient.setId(id);
 
-		webClient.put().uri("http://localhost:8080/api/patient/{id}", id).bodyValue(patient).retrieve()
+		webClient.put().uri(URL + "/api/patient/{id}", id).bodyValue(patient).retrieve()
 				.bodyToMono(Patient.class).block();
 
 		return "redirect:/patient";
@@ -99,7 +99,7 @@ public class ControllerUi {
 	 */
 	@PostMapping("/patient/delete/{id}")
 	public String patient(@PathVariable("id") Integer id) {
-		webClient.delete().uri("http://localhost:8080/api/patient/{id}", id).retrieve().toBodilessEntity().block();
+		webClient.delete().uri(URL + "/api/patient/{id}", id).retrieve().toBodilessEntity().block();
 
 		return "redirect:/patient";
 	}
@@ -110,14 +110,14 @@ public class ControllerUi {
 	 */
 	@GetMapping("/note/{id}")
 	public String getNote(@PathVariable("id") String id, Model model) {
-		Note note = webClient.get().uri("http://localhost:8080/api/note/{id}", id).retrieve().bodyToMono(Note.class)
+		Note note = webClient.get().uri(URL + "/api/note/{id}", id).retrieve().bodyToMono(Note.class)
 				.block();
 
 		model.addAttribute("isNew", false);
 		model.addAttribute("note", note);
 		return "note";
 	}
-	
+
 	/**
 	 * Show note view for new note
 	 * */
@@ -140,7 +140,7 @@ public class ControllerUi {
 	        note.setId(null);
 	    }
 	    webClient.post()
-	        .uri("http://localhost:8080/api/note")
+	        .uri(URL + "/api/note")
 	        .bodyValue(note)
 	        .retrieve()
 	        .bodyToMono(Note.class)
@@ -155,7 +155,7 @@ public class ControllerUi {
 	 */
 	@PostMapping("/note/delete/{id}")
 	public String deleteNote(@PathVariable("id") String id, @RequestParam("patientId") Integer patientId) {
-		webClient.delete().uri("http://localhost:8080/api/note/{id}", id).retrieve().toBodilessEntity().block();
+		webClient.delete().uri(URL + "/api/note/{id}", id).retrieve().toBodilessEntity().block();
 
 		return "redirect:/patient/" + patientId;
 	}
