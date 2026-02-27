@@ -6,7 +6,6 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import org.springframework.stereotype.Service;
-
 import com.medilabo.assessment_service.model.Gender;
 import com.medilabo.assessment_service.model.Note;
 import com.medilabo.assessment_service.model.Patient;
@@ -46,6 +45,11 @@ public class AssessmentService {
 	    return triggerCounter;
 	}
 	
+	/**
+	 * Calculate age with birthdate
+	 * @param Date
+	 * @Return Age
+	 * */
 	public int calculateAge(Date birthDate) {
 	    if (birthDate == null) {
 	        return 0;
@@ -58,6 +62,11 @@ public class AssessmentService {
 	    return Period.between(localBirthDate, LocalDate.now()).getYears();
 	}
 
+	/**
+	 * Determine risk for patient
+	 * @param Patient, triggerCount
+	 * @return Risk term
+	 * */
 	public String determineRisk(Patient patient, Integer triggerCount) {
 
 		Integer age = calculateAge(patient.getBirthdate());
@@ -95,6 +104,11 @@ public class AssessmentService {
 
 	}
 	
+	/**
+	 * Assessment risk of diabate
+	 * @param patient, list of notes
+	 * @return Assessment result
+	 * */
 	public String assessment(Patient patient, List<Note> notes) {
 		String result = determineRisk(patient, countTriggerOccurrences(notes));
 		return result;
