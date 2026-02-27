@@ -46,10 +46,15 @@ public class ControllerUi {
 				.bodyToMono(Patient.class).block();
 		List<Note> notes = webClient.get().uri(URL + "/api/note/user/{id}", id).retrieve()
 				.bodyToFlux(Note.class).collectList().block();
+		
+		String assessment = "No informations";
+		assessment = webClient.get().uri(URL + "/api/assessment/{id}", id).retrieve()
+				.bodyToMono(String.class).block();
 
 		model.addAttribute("isNew", false);
 		model.addAttribute("patient", patient);
 		model.addAttribute("notes", notes);
+		model.addAttribute("assessment", assessment);
 		return "patient";
 	}
 
