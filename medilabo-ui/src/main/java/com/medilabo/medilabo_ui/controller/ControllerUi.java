@@ -121,8 +121,6 @@ public class ControllerUi {
 	 */
     @PostMapping("/note")
     public String saveNote(@ModelAttribute("note") Note note) {
-        // LA SÉCURITÉ QUI MANQUAIT :
-        // Si l'ID est un texte vide (venant du formulaire), on le remet à null
         if (note.getId() != null && note.getId().isEmpty()) {
             note.setId(null);
         }
