@@ -18,11 +18,12 @@ public class CustomUserDetailsService implements UserDetailsService {
 	@Autowired
 	private UserRepository userRepository;
 	
-	@Override
+	
 	/**
 	 * Request in DB to get user informations.
 	 * Method in Spring Security that's used to retrieve user information from a data source (like a database) based on their username
 	 * */
+	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		com.medilabo.medilabo_ui.model.User user = userRepository.findByUsername(username)
 				.orElseThrow(() -> new UsernameNotFoundException("Aucun utilisateur n'a été trouvé :" + username));	//Find user from DB

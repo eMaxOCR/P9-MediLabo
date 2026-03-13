@@ -10,18 +10,18 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-@Configuration //Spring detect this class has configuration class.
+@Configuration
 @EnableWebSecurity 
 public class SpringSecurityAuthApplication {
 
 	@Autowired
 	private CustomUserDetailsService customUserDetailsService;
 	
-	@Bean
 	/**
 	 * Configuration bean that defines the entire security behavior of your application.
 	 * It's like a director
 	 * */
+	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
 		return http
 				.csrf(csrf -> csrf.disable())
@@ -40,25 +40,24 @@ public class SpringSecurityAuthApplication {
 			        )
 				.logout(logout -> logout
 			            .permitAll()
-			            .logoutSuccessUrl("/login") 			// Redirige vers la page de connexion avec un paramètre de déconnexion après la déconnexion
+			            .logoutSuccessUrl("/login") 			
 			        )
 				//.oauth2Login(Customizer.withDefaults())		//Setup OAuth.
 				.build(); 										//Create login form page.
 	}
 	
-	@Bean
 	/**
 	 * Encrypt password
 	 * */
+	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 	
-	
-	@Bean
 	/**
 	 * Manage authentication sources
 	 * */
+	@Bean
 	public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder) throws Exception {
 	    AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
 	authenticationManagerBuilder.userDetailsService(customUserDetailsService).passwordEncoder(bCryptPasswordEncoder);

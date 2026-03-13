@@ -100,7 +100,7 @@
 						<tr th:each=" p : ${notes}">
 							<td th:text="${p.note}"></td>
 							<td class="text-end"><a class="btn btn-outline-primary"
-								th:href="@{/note/{id}(id=${p.id})}">Consulter</a></td>
+								th:href="@{/note/edit/{id}(id=${p.id})}">Consulter</a></td> <!-- ATTTENTIONB!!!!! j'ai ajouté edit -->
 						</tr>
 					</tbody>
 				</table>

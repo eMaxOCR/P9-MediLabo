@@ -1,6 +1,8 @@
 package com.medilabo.medilabo_ui.model;
 
-import org.springframework.data.annotation.Id;
+import com.fasterxml.jackson.annotation.JsonAlias;
+//import org.springframework.data.annotation.Id;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,7 +10,9 @@ import lombok.Setter;
 @Setter
 public class Note {
 	
-	@Id
+	//@ID
+	@JsonProperty("id")
+    @JsonAlias({"_id", "id"})
 	private String id;
 	private Integer patientId;
 	private String note;

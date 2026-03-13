@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import com.medilabo.assessment_service.model.Gender;
+import com.medilabo.assessment_service.model.LevelRisk;
 import com.medilabo.assessment_service.model.Note;
 import com.medilabo.assessment_service.model.Patient;
 import com.medilabo.assessment_service.model.Triggers;
@@ -41,7 +42,6 @@ public class AssessmentService {
 	            }
 	        }
 	    }
-	    System.out.println(triggerCounter);
 	    return triggerCounter;
 	}
 	
@@ -74,29 +74,29 @@ public class AssessmentService {
 		
 		//Early onset
 		if (age > 30 && triggerCount >= 8) {
-		    return "Early onset";
+		    return LevelRisk.EARLY_ONSET.getLibelle() ;
 		}
 		if (genre == Gender.M && age < 30 && triggerCount >= 5) {
-		    return "Early onset";
+		    return LevelRisk.EARLY_ONSET.getLibelle() ;
 		}
 		if (genre == Gender.F && age < 30 && triggerCount >= 7) {
-		    return "Early onset";
+		    return LevelRisk.EARLY_ONSET.getLibelle() ;
 		}
 		
 		//In Danger
 		if (age > 30 && triggerCount >= 6) {
-		    return "In Danger";
+		    return LevelRisk.IN_DANGER.getLibelle();
 		}
 		if(genre == Gender.M && age < 30 && triggerCount >= 3 ) {
-			return "In danger";
+			return LevelRisk.IN_DANGER.getLibelle();
 		}
 		if (genre == Gender.F && age < 30 && triggerCount >= 4) {
-		    return "In Danger";
+		    return LevelRisk.IN_DANGER.getLibelle();
 		}
 		
 		//Borderline
 		if(age > 30 && triggerCount >= 2 && triggerCount<=5 ) {
-			return "Borderline";
+			return LevelRisk.BORDERLINE.getLibelle();
 		}
 		
 		//Default
