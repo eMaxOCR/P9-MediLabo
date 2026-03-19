@@ -7,12 +7,15 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 
 @SpringBootTest
+@AutoConfigureMockMvc
 public class ControllerTest {
     private static MockWebServer mockBackEnd;
     
@@ -31,6 +34,7 @@ public class ControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "system-user", roles = {"SYSTEM"})
     void testStatusOk() throws Exception {
 
         mockBackEnd.enqueue(new MockResponse()

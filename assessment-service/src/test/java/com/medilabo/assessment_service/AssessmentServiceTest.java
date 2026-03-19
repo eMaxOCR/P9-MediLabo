@@ -59,7 +59,7 @@ class AssessmentServiceTest {
 
         String risk = assessmentService.determineRisk(patient, 7);
 
-        assertThat(risk).isEqualTo("Early onset");
+        assertThat(risk).isEqualTo("Early on set");
     }
 
     @Test
