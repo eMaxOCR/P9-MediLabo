@@ -36,7 +36,7 @@ public class GatewaySecurityConfig {
     @Bean
     public MapReactiveUserDetailsService userDetailsService() {
         UserDetails systemUser = User.withUsername(username)
-            .password("{noop}" + password)
+            .password("{bcrypt}" + password)
             .roles("SYSTEM")
             .build();
             
