@@ -1,0 +1,63 @@
+services:
+ mysql:
+  image: mysql:latest
+  environment: 
+   MYSQL_DATABASE: medilabo
+   MYSQL_ROOT_PASSWORD: admin
+  ports:
+   - 3306:3306
+  volumes:
+   - mysql_data:/var/lib/mysql
+  networks:
+   - my_network
+ 
+ medilabo-ui:
+  build: 
+   context: ./medilabo-ui
+  depends_on: 
+   - mysql
+  ports:
+   - 8082:8082
+  environment:
+   - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/medilabo?serverTimezone=UTC
+   - SPRING_DATASOURCE_USERNAME=root
+   - SPRING_DATASOURCE_PASSWORD=admin
+  networks:
+   - my_network
+
+ gateway-service:
+  build: 
+   context: ./gateway-service
+  networks:
+   - my_network
+
+ patient-service:
+  build: 
+   context: ./patient-service
+  networks:
+   - my_network
+
+ notes-service:
+  build: 
+    context: ./notes-service
+  networks:
+  - my_network
+ mongodb:
+  image: mongo:latest
+  volumes:
+   - mongodb_data
+  networks:
+  - my_network
+ assessment-service:
+  build: 
+   context: ./assessment-service
+  networks:
+   - my_network
+   
+networks:
+ my_network:
+  driver: bridge
+
+volumes:
+ mysql_data:
+ mongodb_data:
