@@ -14,54 +14,54 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.medilabo.note_service.model.Note;
 import com.medilabo.note_service.service.NoteService;
 
-
 @RequestMapping("/note")
 @RestController
 public class controller {
 	@Autowired
 	private NoteService noteService;
-	
+
 	/**
 	 * Get note information
+	 * 
 	 * @return note
-	 * */
+	 */
 	@GetMapping("/{id}")
-	public Note getNote(@PathVariable("id") String id){
+	public Note getNote(@PathVariable("id") String id) {
 		return noteService.findById(id);
-		
+
 	}
-	
+
 	/**
 	 * Get list of patient's notes
+	 * 
 	 * @return list of notes.
-	 * */
+	 */
 	@GetMapping("/user/{id}")
-	public Iterable<Note> getAllPatientNote(@PathVariable("id") Integer id){
+	public Iterable<Note> getAllPatientNote(@PathVariable("id") Integer id) {
 		return noteService.getAllPatientNote(id);
 	}
-	
+
 	/**
 	 * Create note
-	 * @param note 
-	 * */
+	 * 
+	 * @param note
+	 */
 	@PostMapping()
-	public ResponseEntity<Note> save(@RequestBody Note note){
-		
+	public ResponseEntity<Note> save(@RequestBody Note note) {
+
 		Note newNote = noteService.save(note);
-		URI existingNote = ServletUriComponentsBuilder
-				.fromCurrentRequest()
-				.path("/{id}")
-				.buildAndExpand(newNote.getPatientId())
-                .toUri(); //Sent URI to header.
+		URI existingNote = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(newNote.getPatientId()).toUri(); // Sent URI to header.
 		return ResponseEntity.created(existingNote).body(newNote);
 	}
-	
+
 	/**
 	 * Delete one patient's note
+	 * 
 	 * @param note's id
-	 * */
+	 */
 	@DeleteMapping("/{id}")
-	public void deletePatient(@PathVariable("id") String id){
+	public void deletePatient(@PathVariable("id") String id) {
 		noteService.delete(id);
 	}
 }

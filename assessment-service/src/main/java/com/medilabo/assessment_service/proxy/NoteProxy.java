@@ -6,8 +6,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import com.medilabo.assessment_service.model.Note;
 
-@FeignClient(name = "note-service", url = "http://localhost:8080/api/note")
+@FeignClient(name = "note-service", url = "${service.note.url}")
 public interface NoteProxy {
-    @GetMapping("/user/{patientId}")
+    @GetMapping("note/user/{patientId}")
     List<Note> getNotesByPatientId(@PathVariable("patientId") Integer patientId);
 }
+
+

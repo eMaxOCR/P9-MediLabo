@@ -5,7 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
-@FeignClient(name = "patient-service", url = "localhost:8080/api/patient")
+@FeignClient(name = "patient-service", url = "${gateway.url}/api/patient")
 public interface PatientProxy {
 
     @GetMapping

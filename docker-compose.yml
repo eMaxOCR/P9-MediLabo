@@ -10,49 +10,84 @@ services:
    - mysql_data:/var/lib/mysql
   networks:
    - my_network
+  healthcheck:
+   test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+   timeout: 5s
+   retries: 10
  
  medilabo-ui:
   build: 
    context: ./medilabo-ui
-  depends_on: 
-   - mysql
+  depends_on:
+   mysql:
+    condition: service_healthy
   ports:
    - 8082:8082
   environment:
+   - GATEWAY_URL=http://gateway-service:8080
+   - SPRING_PROFILES_ACTIVE=docker
    - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/medilabo?serverTimezone=UTC
    - SPRING_DATASOURCE_USERNAME=root
    - SPRING_DATASOURCE_PASSWORD=admin
   networks:
    - my_network
 
+
  gateway-service:
   build: 
    context: ./gateway-service
+  environment:
+   - SPRING_PROFILES_ACTIVE=docker
   networks:
    - my_network
+  ports:
+   - "8080:8080"
 
  patient-service:
   build: 
    context: ./patient-service
+  environment:
+   - SPRING_PROFILES_ACTIVE=docker
+   - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/medilabo?serverTimezone=UTC
+   - SPRING_DATASOURCE_USERNAME=root
+   - SPRING_DATASOURCE_PASSWORD=admin
   networks:
    - my_network
+  depends_on:
+   mysql:
+    condition: service_healthy
 
  notes-service:
   build: 
-    context: ./notes-service
+   context: ./notes-service
+  environment:
+   - SPRING_PROFILES_ACTIVE=docker
+   - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/test
+   - SPRING_MONGODB_URI=mongodb://mongodb:27017/test
   networks:
-  - my_network
+   - my_network
+  depends_on:
+   - mongodb
+  
  mongodb:
   image: mongo:latest
   volumes:
-   - mongodb_data
+   - mongodb_data:/data/db
   networks:
-  - my_network
+   - my_network
+#  ports:
+#   - "27018:27017"
+  
  assessment-service:
   build: 
    context: ./assessment-service
   networks:
    - my_network
+  depends_on:
+   - patient-service
+   - notes-service
+  environment:
+   - SPRING_PROFILES_ACTIVE=docker
    
 networks:
  my_network:
