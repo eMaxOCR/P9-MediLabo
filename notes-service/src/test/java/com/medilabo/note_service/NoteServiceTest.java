@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -27,67 +26,57 @@ class NoteServiceTest {
 
     @Test
     void testFindById_Success() {
-        // GIVEN
+
         Note note = new Note();
         note.setId("1");
         note.setNote("Test note");
         when(noteRepository.findById("1")).thenReturn(Optional.of(note));
 
-        // WHEN
         Note result = noteService.findById("1");
 
-        // THEN
         assertThat(result).isNotNull();
         assertThat(result.getNote()).isEqualTo("Test note");
     }
 
     @Test
     void testSave() {
-        // GIVEN
         Note note = new Note();
         note.setNote("New note");
         when(noteRepository.save(any(Note.class))).thenReturn(note);
 
-        // WHEN
         Note savedNote = noteService.save(note);
 
-        // THEN
         assertThat(savedNote.getNote()).isEqualTo("New note");
         verify(noteRepository).save(note);
     }
 
     @Test
     void testDelete() {
-        // GIVEN
         Note note = new Note();
         note.setId("1");
         when(noteRepository.findById("1")).thenReturn(Optional.of(note));
 
-        // WHEN
         noteService.delete("1");
 
-        // THEN
         verify(noteRepository).deleteById("1");
     }
     
     @Test
     void testGetAllPatientNote() {
-        // GIVEN
+
         Note note = new Note();
         note.setPatientId(1);
         when(noteRepository.findByPatientId(1)).thenReturn(List.of(note));
 
-        // WHEN
         Iterable<Note> result = noteService.getAllPatientNote(1);
 
-        // THEN
         assertThat(result).hasSize(1);
         verify(noteRepository).findByPatientId(1);
     }
 
     @Test
     void testUpdate_Success() {
-        // GIVEN
+
         Note existingNote = new Note();
         existingNote.setId("abc");
         existingNote.setNote("Old Note");
@@ -98,11 +87,9 @@ class NoteServiceTest {
         when(noteRepository.findById("abc")).thenReturn(Optional.of(existingNote));
         when(noteRepository.save(any(Note.class))).thenAnswer(i -> i.getArguments()[0]);
 
-        // WHEN
         Note updated = noteService.update("abc", newContent);
 
-        // THEN
         assertThat(updated.getNote()).isEqualTo("New Content");
-        assertThat(updated.getId()).isEqualTo("abc"); // L'ID ne doit pas avoir changé
+        assertThat(updated.getId()).isEqualTo("abc"); 
     }
 }
