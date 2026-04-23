@@ -32,7 +32,7 @@ public class SpringSecurityAuthApplication {
 			auth.anyRequest().authenticated(); 					//for http"s".
 		}).formLogin(form -> form
 					.permitAll()								//All can see this page.
-					.defaultSuccessUrl("/patient")		//Go to main web page when logged.
+					.defaultSuccessUrl("/patient")				//Go to main web page when logged.
 					.failureUrl("/login?error=true")			//Go to error web page when error detected. 
 				)
 				.exceptionHandling(exceptions -> exceptions

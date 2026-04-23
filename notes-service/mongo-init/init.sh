@@ -1,0 +1,1 @@
+mongoimport --db test --collection notes --type json --file /docker-entrypoint-initdb.d/test.notes.json --jsonArray

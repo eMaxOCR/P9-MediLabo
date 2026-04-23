@@ -3,13 +3,11 @@ services:
   image: mysql:latest
   environment: 
    MYSQL_DATABASE: medilabo
-   MYSQL_ROOT_PASSWORD: admin
-  ports:
-   - 3306:3306
+   MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
   volumes:
    - mysql_data:/var/lib/mysql
   networks:
-   - my_network
+   - db_mysql
   healthcheck:
    test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
    timeout: 5s
@@ -28,9 +26,10 @@ services:
    - SPRING_PROFILES_ACTIVE=docker
    - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/medilabo?serverTimezone=UTC
    - SPRING_DATASOURCE_USERNAME=root
-   - SPRING_DATASOURCE_PASSWORD=admin
+   - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
   networks:
-   - my_network
+   - frontend
+   - db_mysql
 
 
  gateway-service:
@@ -39,7 +38,8 @@ services:
   environment:
    - SPRING_PROFILES_ACTIVE=docker
   networks:
-   - my_network
+   - frontend
+   - backend
   ports:
    - "8080:8080"
 
@@ -50,9 +50,10 @@ services:
    - SPRING_PROFILES_ACTIVE=docker
    - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/medilabo?serverTimezone=UTC
    - SPRING_DATASOURCE_USERNAME=root
-   - SPRING_DATASOURCE_PASSWORD=admin
+   - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
   networks:
-   - my_network
+   - backend
+   - db_mysql
   depends_on:
    mysql:
     condition: service_healthy
@@ -65,7 +66,8 @@ services:
    - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/test
    - SPRING_MONGODB_URI=mongodb://mongodb:27017/test
   networks:
-   - my_network
+   - backend
+   - db_mongo
   depends_on:
    - mongodb
   
@@ -73,16 +75,15 @@ services:
   image: mongo:latest
   volumes:
    - mongodb_data:/data/db
+   - ./notes-service/mongo-init:/docker-entrypoint-initdb.d/:ro
   networks:
-   - my_network
-#  ports:
-#   - "27018:27017"
+   - db_mongo
   
  assessment-service:
   build: 
    context: ./assessment-service
   networks:
-   - my_network
+   - backend
   depends_on:
    - patient-service
    - notes-service
@@ -90,8 +91,14 @@ services:
    - SPRING_PROFILES_ACTIVE=docker
    
 networks:
- my_network:
-  driver: bridge
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
+  db_mysql:
+    driver: bridge
+  db_mongo:
+    driver: bridge
 
 volumes:
  mysql_data:

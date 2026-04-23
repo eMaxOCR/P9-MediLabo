@@ -26,6 +26,15 @@ public class ControllerUi {
     @Autowired
     private AssessmentProxy assessmentProxy;
 
+    
+    /**
+     * Redirect to patients
+     * */
+    @GetMapping("/")
+    public String home() {
+        return "redirect:/patient";
+    }
+    
     /**
 	 * Retreive all patient
 	 * @return the patient list view
