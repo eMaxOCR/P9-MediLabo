@@ -14,7 +14,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 
-@SpringBootTest
+@SpringBootTest(properties = {
+	    "service.patient.url=http://localhost:8080", 
+	    "service.note.url=http://localhost:8080"
+	})
 @AutoConfigureMockMvc
 public class ControllerTest {
     private static MockWebServer mockBackEnd;

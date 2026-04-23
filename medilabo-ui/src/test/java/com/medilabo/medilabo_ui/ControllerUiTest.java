@@ -184,23 +184,4 @@ class ControllerUiTest {
         verify(noteProxy, times(1)).deleteNote("note-001");
     }
 
-//    @ParameterizedTest(name = "Patient {0} → diagnostic attendu : {1}")
-//    @CsvSource({
-//        "1, None",
-//        "2, Borderline",
-//        "3, In Danger",
-//        "4, Early onset"
-//    })
-//    void getPatient_assessmentDiagnostic_parametrized(Integer patientId, String expectedAssessment) throws Exception {
-//        when(patientProxy.getPatientById(patientId)).thenReturn(patient);
-//        when(noteProxy.getNotesByPatientId(patientId)).thenReturn(List.of(note));
-//        when(assessmentProxy.getAssessmentByPatientId(patientId)).thenReturn(expectedAssessment);
-//
-//        mockMvc.perform(get("/patient/{id}", patientId))
-//                .andExpect(status().isOk())
-//                .andExpect(view().name("patient"))
-//                .andExpect(model().attribute("assessment", expectedAssessment));
-//
-//        verify(assessmentProxy).getAssessmentByPatientId(patientId);
-//    }
 }
