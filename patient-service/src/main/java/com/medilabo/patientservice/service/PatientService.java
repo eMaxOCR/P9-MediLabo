@@ -5,15 +5,22 @@ import java.util.Optional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.medilabo.patientservice.configuration.ResourceNotFoundException;
 import com.medilabo.patientservice.model.Patient;
+import com.medilabo.patientservice.proxy.NoteProxy;
 import com.medilabo.patientservice.repository.PatientRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class PatientService {
 
 	@Autowired
 	private PatientRepository patientRepository;
+	
+	@Autowired
+	private NoteProxy noteProxy;
 	
 	/**
 	 * Get one patient information
@@ -97,4 +104,13 @@ public class PatientService {
 		}
 		patientRepository.deleteById(id);
 	}
+	
+	/**
+	 * Delete all patient's n
+	 * @param patient's ID
+	 * */
+	@Transactional
+    public void deletePatientNote(Integer id) {
+        noteProxy.deleteAllNotesByPatientId(id);
+    }
 }

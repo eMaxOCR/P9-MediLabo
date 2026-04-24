@@ -1,7 +1,6 @@
 package com.medilabo.patientservice;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -22,6 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.medilabo.patientservice.configuration.ResourceNotFoundException;
 import com.medilabo.patientservice.model.Gender;
 import com.medilabo.patientservice.model.Patient;
+import com.medilabo.patientservice.proxy.NoteProxy;
 import com.medilabo.patientservice.repository.PatientRepository;
 import com.medilabo.patientservice.service.PatientService;
 
@@ -30,10 +30,13 @@ class PatientServiceTest {
 
     @Mock
     private PatientRepository patientRepository;
+    
+    @Mock
+    private NoteProxy noteProxy;
 
     @InjectMocks
     private PatientService patientService;
-
+    
     private Patient testPatient;
 
     @BeforeEach
@@ -157,5 +160,14 @@ class PatientServiceTest {
 
         assertThrows(ResourceNotFoundException.class, () -> patientService.delete(99));
         verify(patientRepository, times(1)).existsById(99);
+    }
+    
+    @Test
+    public void deletePatientNoteTest() {
+        Integer patientId = 1;
+
+        patientService.deletePatientNote(patientId);
+
+        verify(noteProxy, times(1)).deleteAllNotesByPatientId(patientId);
     }
 }

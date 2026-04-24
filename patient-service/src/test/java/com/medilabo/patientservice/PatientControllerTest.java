@@ -3,13 +3,14 @@ package com.medilabo.patientservice;
 import com.medilabo.patientservice.controller.Controller;
 import com.medilabo.patientservice.model.Patient;
 import com.medilabo.patientservice.service.PatientService;
-import tools.jackson.databind.ObjectMapper;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
@@ -17,14 +18,16 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @WebMvcTest(Controller.class)
+@AutoConfigureMockMvc(addFilters = false)
 class PatientControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @MockitoBean 
+    @MockBean
     private PatientService patientService;
 
     @Autowired

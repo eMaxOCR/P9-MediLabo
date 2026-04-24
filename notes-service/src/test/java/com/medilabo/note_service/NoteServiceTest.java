@@ -2,6 +2,7 @@ package com.medilabo.note_service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import java.util.List;
@@ -25,7 +26,7 @@ class NoteServiceTest {
     private NoteService noteService;
 
     @Test
-    void testFindById_Success() {
+    void findByIdTest() {
 
         Note note = new Note();
         note.setId("1");
@@ -39,7 +40,7 @@ class NoteServiceTest {
     }
 
     @Test
-    void testSave() {
+    void saveTest() {
         Note note = new Note();
         note.setNote("New note");
         when(noteRepository.save(any(Note.class))).thenReturn(note);
@@ -51,7 +52,7 @@ class NoteServiceTest {
     }
 
     @Test
-    void testDelete() {
+    void deleteTest() {
         Note note = new Note();
         note.setId("1");
         when(noteRepository.findById("1")).thenReturn(Optional.of(note));
@@ -62,7 +63,7 @@ class NoteServiceTest {
     }
     
     @Test
-    void testGetAllPatientNote() {
+    void getAllPatientNoteTest() {
 
         Note note = new Note();
         note.setPatientId(1);
@@ -75,7 +76,7 @@ class NoteServiceTest {
     }
 
     @Test
-    void testUpdate_Success() {
+    void updateTest() {
 
         Note existingNote = new Note();
         existingNote.setId("abc");
@@ -91,5 +92,14 @@ class NoteServiceTest {
 
         assertThat(updated.getNote()).isEqualTo("New Content");
         assertThat(updated.getId()).isEqualTo("abc"); 
+    }
+    
+    @Test
+    public void deleteAllByPatientId_ShouldCallRepository() {
+        Integer patientId = 1;
+
+        noteService.deleteAllByPatientId(patientId);
+
+        verify(noteRepository, times(1)).deleteByPatientId(patientId);
     }
 }

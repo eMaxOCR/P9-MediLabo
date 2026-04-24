@@ -67,5 +67,13 @@ public class NoteService {
 		}
 		noteRespository.deleteById(id);
 	}
+	
+	/**
+	 * Delete all notes for a specific patient
+	 * @param patientId
+	 */
+	public void deleteAllByPatientId(Integer patientId) {
+	    noteRespository.deleteByPatientId(patientId);
+	}
 
 }

@@ -38,7 +38,7 @@ public class ControllerTest {
     }
 
     @Test
-    void getNote() throws Exception {
+    void getNoteTest() throws Exception {
         Note note = new Note();
         note.setId("note123");
         note.setPatientId(1);
@@ -50,7 +50,7 @@ public class ControllerTest {
     }
 
     @Test
-    void getAllPatientNote() throws Exception {
+    void getAllPatientNoteTest() throws Exception {
         Note note = new Note();
         note.setId("note123");
         note.setPatientId(1);
@@ -62,7 +62,7 @@ public class ControllerTest {
     }
 
     @Test
-    void save() throws Exception {
+    void saveTest() throws Exception {
         Note note = new Note();
         note.setId("note123");
         note.setPatientId(1);
@@ -75,10 +75,20 @@ public class ControllerTest {
     }
 
     @Test
-    void deleteNote() throws Exception {
+    void deleteNoteTest() throws Exception {
         doNothing().when(noteService).delete("note123");
 
         mockMvc.perform(delete("/note/note123"))
                 .andExpect(status().isOk());
+    }
+    
+    @Test
+    void deleteAllNotesByPatientIdTest() throws Exception {
+    	Integer patientId = 1;
+
+        mockMvc.perform(delete("/note/patient/" + patientId))
+               .andExpect(status().isOk());
+
+        verify(noteService, times(1)).deleteAllByPatientId(patientId);
     }
 }

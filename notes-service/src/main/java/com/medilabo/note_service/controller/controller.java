@@ -64,4 +64,15 @@ public class controller {
 	public void deletePatient(@PathVariable("id") String id) {
 		noteService.delete(id);
 	}
+	
+	/**
+	 * Delete all patient's note
+	 * 
+	 * @param Patient's id
+	 */
+	@DeleteMapping("/patient/{patientId}")
+    public void deleteAllNotesByPatientId(@PathVariable("patientId") Integer patientId) {
+        noteService.deleteAllByPatientId(patientId);
+    }
+	
 }

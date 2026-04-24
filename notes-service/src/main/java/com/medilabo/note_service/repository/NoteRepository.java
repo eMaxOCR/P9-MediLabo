@@ -11,5 +11,7 @@ import com.medilabo.note_service.model.Note;
 public interface NoteRepository extends MongoRepository<Note, String>{
 
 	public List<Note> findByPatientId(Integer patientId);
+	
+	void deleteByPatientId(Integer patientId);
 
 }
