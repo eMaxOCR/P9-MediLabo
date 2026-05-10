@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Header</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}"
+	rel="stylesheet">
+</head>
+
+<body>
+
+
+	<header th:fragment="header">
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+			<div class="container">
+				<a class="navbar-brand d-flex align-items-center"
+					th:href="@{/patient}"> <img
+					src="https://www.svgrepo.com/show/26555/stethoscope-medical-heart-beats-control-tool.svg"
+					alt="Logo" width="30" height="24" class="me-2 filter-white" style="filter: invert(1) brightness(2);">
+					<span>Médilabo</span>
+				</a>
+
+				<button class="navbar-toggler" type="button"
+					data-bs-toggle="collapse" data-bs-target="#navMain">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+
+				<div class="collapse navbar-collapse" id="navMain">
+					<ul class="navbar-nav me-auto">
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/patient}">Patients</a></li>
+						</li>
+					</ul>
+
+					<form th:action="@{/logout}" method="post" class="d-flex">
+						<button type="submit" class="btn btn-outline-danger btn-sm">Déconnexion</button>
+					</form>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+</body>
+</html>

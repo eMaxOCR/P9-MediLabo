@@ -1,0 +1,105 @@
+services:
+ mysql:
+  image: mysql:latest
+  environment: 
+   MYSQL_DATABASE: medilabo
+   MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+  volumes:
+   - mysql_data:/var/lib/mysql
+  networks:
+   - db_mysql
+  healthcheck:
+   test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+   timeout: 5s
+   retries: 10
+ 
+ medilabo-ui:
+  build: 
+   context: ./medilabo-ui
+  depends_on:
+   mysql:
+    condition: service_healthy
+  ports:
+   - 8082:8082
+  environment:
+   - GATEWAY_URL=http://gateway-service:8080
+   - SPRING_PROFILES_ACTIVE=docker
+   - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/medilabo?serverTimezone=UTC
+   - SPRING_DATASOURCE_USERNAME=root
+   - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
+  networks:
+   - frontend
+   - db_mysql
+
+
+ gateway-service:
+  build: 
+   context: ./gateway-service
+  environment:
+   - SPRING_PROFILES_ACTIVE=docker
+  networks:
+   - frontend
+   - backend
+  ports:
+   - "8080:8080"
+
+ patient-service:
+  build: 
+   context: ./patient-service
+  environment:
+   - SPRING_PROFILES_ACTIVE=docker
+   - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/medilabo?serverTimezone=UTC
+   - SPRING_DATASOURCE_USERNAME=root
+   - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
+  networks:
+   - backend
+   - db_mysql
+  depends_on:
+   mysql:
+    condition: service_healthy
+
+ notes-service:
+  build: 
+   context: ./notes-service
+  environment:
+   - SPRING_PROFILES_ACTIVE=docker
+   - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/test
+   - SPRING_MONGODB_URI=mongodb://mongodb:27017/test
+  networks:
+   - backend
+   - db_mongo
+  depends_on:
+   - mongodb
+  
+ mongodb:
+  image: mongo:latest
+  volumes:
+   - mongodb_data:/data/db
+   - ./notes-service/mongo-init:/docker-entrypoint-initdb.d/:ro
+  networks:
+   - db_mongo
+  
+ assessment-service:
+  build: 
+   context: ./assessment-service
+  networks:
+   - backend
+  depends_on:
+   - patient-service
+   - notes-service
+  environment:
+   - SPRING_PROFILES_ACTIVE=docker
+   
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
+  db_mysql:
+    driver: bridge
+  db_mongo:
+    driver: bridge
+
+volumes:
+ mysql_data:
+ mongodb_data:
