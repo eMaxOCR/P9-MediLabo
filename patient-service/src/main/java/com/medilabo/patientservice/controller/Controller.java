@@ -16,7 +16,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.medilabo.patientservice.model.Patient;
 import com.medilabo.patientservice.service.PatientService;
 
-@RequestMapping("/patient")
+@RequestMapping("/api/patient")
 @RestController
 public class Controller {
 
