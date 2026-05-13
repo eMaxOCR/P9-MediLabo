@@ -12,7 +12,7 @@ import com.medilabo.assessment_service.model.Patient;
 import com.medilabo.assessment_service.proxy.NoteProxy;
 import com.medilabo.assessment_service.proxy.PatientProxy;
 
-@RequestMapping("/assessment")
+@RequestMapping("/api/assessment")
 @RestController
 public class Controller {
 

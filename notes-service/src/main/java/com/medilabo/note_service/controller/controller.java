@@ -14,7 +14,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.medilabo.note_service.model.Note;
 import com.medilabo.note_service.service.NoteService;
 
-@RequestMapping("/note")
+@RequestMapping("/api/note")
 @RestController
 public class controller {
 	@Autowired

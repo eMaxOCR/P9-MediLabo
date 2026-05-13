@@ -7,9 +7,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import com.medilabo.medilabo_ui.configuration.FeignConfig;
 import com.medilabo.medilabo_ui.model.Note;
 
-@FeignClient(name = "note-service", url = "${gateway.url}/api/note")
+//@FeignClient(name = "note-service", url = "${gateway.url}/api/note")
+@FeignClient(name = "note-service", url = "${gateway.url}/api/note", configuration = FeignConfig.class)
 public interface NoteProxy {
     @GetMapping("/user/{patientId}")
     List<Note> getNotesByPatientId(@PathVariable("patientId") Integer patientId);
